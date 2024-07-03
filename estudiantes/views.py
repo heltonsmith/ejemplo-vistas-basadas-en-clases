@@ -2,9 +2,10 @@ from typing import Any
 from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
 from django.shortcuts import render
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Estudiante
 from django.http import Http404
+from django.urls import reverse_lazy
 
 class MiHome(TemplateView):
     template_name = 'home.html'
@@ -41,4 +42,23 @@ class EstudianteView(DetailView):
             context['error'] = 'Estudiante no encontrado'
         
         return context
-    
+
+
+class EstudianteCreateView(CreateView):
+    model = Estudiante
+    template_name = "agregar.html"
+    fields = ['rut', 'nombre', 'fecha_nac', 'genero']
+    success_url = reverse_lazy('ver_estudiantes')
+
+
+class EstudianteUpdateView(UpdateView):
+    model = Estudiante
+    template_name = "actualizar.html"
+    fields = ['rut', 'nombre', 'fecha_nac', 'genero']
+    success_url = reverse_lazy('ver_estudiantes')
+
+
+class EstudianteDeleteView(DeleteView):
+    model = Estudiante
+    template_name = "borrar.html"
+    success_url = reverse_lazy('ver_estudiantes')
